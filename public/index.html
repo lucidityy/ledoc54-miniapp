@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeDoc54 - Boutique</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">LeDoc54</h1>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Category Filter -->
+        <div class="category-filter">
+            <button class="category-btn active" onclick="filterByCategory('all')">Tous</button>
+            <button class="category-btn" onclick="filterByCategory('Ecaille')">Ecaille</button>
+            <button class="category-btn" onclick="filterByCategory('Pharma')">Indian Pharma K</button>
+            <button class="category-btn" onclick="filterByCategory('Cali')">Cali US</button>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-container">
+            <div id="products-grid" class="products-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Cart Sidebar -->
+        <div id="cart-sidebar" class="cart-sidebar">
+            <div class="cart-header">
+                <h3>Votre Panier</h3>
+                <button class="close-cart" onclick="toggleCart()">✕</button>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- Cart items will appear here -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    Total: €<span id="cart-total">0.00</span>
+                </div>
+                <button id="checkout-btn" class="checkout-btn" onclick="showCheckout()">
+                    Commander
+                </button>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkout-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Finaliser la commande</h3>
+                    <button class="close-modal" onclick="closeCheckout()">✕</button>
+                </div>
+                <form id="checkout-form" class="checkout-form">
+                    <div class="form-group">
+                        <label for="customer-name">Nom complet *</label>
+                        <input type="text" id="customer-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customer-phone">Téléphone *</label>
+                        <input type="tel" id="customer-phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery-method">Mode de livraison *</label>
+                        <select id="delivery-method" required onchange="toggleDeliveryFields()">
+                            <option value="">Choisir...</option>
+                            <option value="delivery">Livraison à domicile</option>
+                            <option value="pickup">Retrait sur place</option>
+                        </select>
+                    </div>
+
+                    <div id="delivery-address-group" class="form-group" style="display: none;">
+                        <label for="delivery-address">Adresse de livraison *</label>
+                        <textarea id="delivery-address" rows="3" placeholder="Adresse complète avec code postal et ville"></textarea>
+                    </div>
+
+                    <div id="pickup-location-group" class="form-group" style="display: none;">
+                        <label for="pickup-location">Lieu de retrait</label>
+                        <select id="pickup-location">
+                            <option value="Boutique LeDoc54 - 123 Rue Example, Nancy">Boutique LeDoc54 - 123 Rue Example, Nancy</option>
+                            <option value="Point relais - Place Stanislas">Point relais - Place Stanislas</option>
+                        </select>
+                        <small>Horaires: Lun-Ven 9h-18h, Sam 9h-16h</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes (optionnel)</label>
+                        <textarea id="notes" rows="2" placeholder="Instructions spéciales..."></textarea>
+                    </div>
+
+                    <div class="payment-info">
+                        <p><strong>💰 Paiement en espèces uniquement</strong></p>
+                        <p>Le paiement s'effectue à la livraison ou au retrait</p>
+                    </div>
+
+                    <div class="order-summary">
+                        <h4>Résumé de la commande</h4>
+                        <div id="order-items-summary"></div>
+                        <div class="total-amount">
+                            <strong>Total: €<span id="final-total">0.00</span></strong>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="confirm-order-btn">
+                        Confirmer la commande
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal">
+            <div class="modal-content">
+                <div class="success-content">
+                    <div class="success-icon">✅</div>
+                    <h3>Commande confirmée!</h3>
+                    <p>Votre commande <strong id="order-number"></strong> a été enregistrée.</p>
+                    <p>Nous vous contacterons bientôt pour confirmer les détails.</p>
+                    <button onclick="closeSuccess()" class="close-success-btn">Fermer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

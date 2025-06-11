@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ledoc54-miniapp
+    env: node
+    plan: free
+    buildCommand: npm install && npm run init-db
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+    disk:
+      name: database-disk
+      mountPath: /opt/render/project/src/database
+      sizeGB: 1 
