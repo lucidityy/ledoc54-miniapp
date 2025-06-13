@@ -262,6 +262,7 @@ app.post('/api/orders', (req, res) => {
                 delivery_method,
                 delivery_address,
                 pickup_location,
+                telegram_user_id, // Added telegram_user_id for customer notification
                 total_amount,
                 items: validatedItems.map(item => ({
                   name: item.product.name,
