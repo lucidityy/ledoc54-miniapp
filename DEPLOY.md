@@ -16,7 +16,7 @@ git commit -m "LeDoc54 Mini App ready for deployment"
 git branch -M main
 
 # Create repo on GitHub, then:
-git remote add origin https://github.com/YOURUSERNAME/ledoc54-miniapp.git
+git remote add origin https://github.com/lucdityy/ledoc54-miniapp.git
 git push -u origin main
 ```
 
