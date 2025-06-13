@@ -52,7 +52,8 @@ function logInventoryChange(productId, changeAmount, reason, previousStock, newS
 async function sendOrderNotification(orderDetails) {
   if (!bot) return;
   
-  const message = `
+  // Admin notification
+  const adminMessage = `
 🆕 *New Order - LeDoc54*
 
 📋 Order #${orderDetails.order_number}
@@ -74,9 +75,40 @@ ${orderDetails.pickup_location ? `🏪 Pickup: ${orderDetails.pickup_location}` 
   `;
   
   try {
-    await bot.sendMessage(ADMIN_CHAT_ID, message, { parse_mode: 'Markdown' });
+    await bot.sendMessage(ADMIN_CHAT_ID, adminMessage, { parse_mode: 'Markdown' });
   } catch (error) {
-    console.error('Error sending Telegram notification:', error);
+    console.error('Error sending admin notification:', error);
+  }
+  
+  // Customer confirmation message
+  if (orderDetails.telegram_user_id) {
+    const customerMessage = `
+✅ *Commande confirmée!*
+
+Merci pour votre commande chez LeDoc54.
+
+📋 Commande #${orderDetails.order_number}
+💰 Total: €${orderDetails.total_amount.toFixed(2)}
+
+🛒 *Produits:*
+${orderDetails.items.map(item => 
+  `• ${item.name} x${item.quantity}`
+).join('\n')}
+
+${orderDetails.delivery_method === 'delivery' 
+  ? '🚚 *Livraison à domicile*\nNous vous contacterons bientôt pour confirmer la livraison.' 
+  : '🏪 *Retrait sur place*\nVotre commande sera disponible au point de retrait.'}
+
+💬 Nous vous contacterons prochainement pour finaliser votre commande.
+
+Merci d'avoir choisi LeDoc54!
+    `;
+    
+    try {
+      await bot.sendMessage(orderDetails.telegram_user_id, customerMessage, { parse_mode: 'Markdown' });
+    } catch (error) {
+      console.error('Error sending customer confirmation:', error);
+    }
   }
 }
 

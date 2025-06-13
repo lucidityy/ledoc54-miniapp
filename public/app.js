@@ -313,6 +313,13 @@ document.getElementById('checkout-form').addEventListener('submit', async functi
   const formData = new FormData(this);
   const deliveryMethod = formData.get('delivery-method') || document.getElementById('delivery-method').value;
   
+  // Ensure we get the Telegram user ID if available
+  let telegramUserId = null;
+  if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    telegramUserId = tg.initDataUnsafe.user.id.toString();
+    console.log('Telegram User ID:', telegramUserId);
+  }
+  
   const orderData = {
     customer_name: formData.get('customer-name') || document.getElementById('customer-name').value,
     customer_phone: formData.get('customer-phone') || document.getElementById('customer-phone').value,
@@ -320,7 +327,7 @@ document.getElementById('checkout-form').addEventListener('submit', async functi
     delivery_address: deliveryMethod === 'delivery' ? (formData.get('delivery-address') || document.getElementById('delivery-address').value) : null,
     pickup_location: deliveryMethod === 'pickup' ? (formData.get('pickup-location') || document.getElementById('pickup-location').value) : null,
     notes: formData.get('notes') || document.getElementById('notes').value || null,
-    telegram_user_id: tg?.initDataUnsafe?.user?.id?.toString() || null,
+    telegram_user_id: telegramUserId,
     items: cart.map(item => ({
       product_id: item.product_id,
       quantity: item.quantity
